@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>"The Model Fits" Doesn't Mean "The Model Is True"</title>
+    <style>
+        body {
+            font-family: medium-content-serif-font, Georgia, Cambria, "Times New Roman", Times, serif;
+            font-size: 21px;
+            line-height: 1.58;
+            color: rgba(0, 0, 0, 0.84);
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h1 {
+            font-family: medium-content-sans-serif-font, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+        h2 {
+            font-family: medium-content-sans-serif-font, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            font-size: 32px;
+            font-weight: 600;
+            line-height: 1.25;
+            margin-top: 56px;
+            margin-bottom: 0;
+        }
+        p {
+            margin-top: 29px;
+            margin-bottom: 0;
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.15);
+            margin: 40px 0;
+        }
+        blockquote {
+            border-left: 3px solid rgba(0, 0, 0, 0.84);
+            padding-left: 20px;
+            margin-left: -23px;
+            margin-top: 29px;
+            margin-bottom: 29px;
+            font-style: italic;
+        }
+        ul {
+            margin-top: 29px;
+            margin-bottom: 29px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .technical-note {
+            font-size: 16px;
+            line-height: 1.4;
+            color: rgba(0, 0, 0, 0.54);
+            margin-top: 56px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body>
+
+<h1>"The Model Fits" Doesn't Mean "The Model Is True"</h1>
+
+<p>There's a weird cognitive dissonance that happens when JPL publishes an orbit solution. Most people (reasonably) assume that when NASA says "the model fits," they mean "we know what's happening physically." Like, we've figured it out. Case closed.</p>
+
+<p>But that's not what it means. Not even close.</p>
+
+<p>The reality is that orbit determination is designed to find trajectories, not identify causes. It's answering a fundamentally different question than most people think. And this isn't a bug. It's not a conspiracy. It's just... how inverse problems work.</p>
+
+<p>Here's the part that sounds impossible until someone understands the math: even radically different force histories (smooth outgassing, piecewise thrusts, hell, even nonphysical acceleration profiles) can produce identical-looking orbit fits. The solver doesn't care <em>how</em> the object moved. It only cares that it can draw a smooth curve through the observations.</p>
+
+<blockquote>"The model fits" ≠ "the model is true." What matters is what kind of information orbit fits preserve, and what they erase.</blockquote>
+
+<hr>
+
+<h2>What Orbit Determination Actually "Knows"</h2>
+
+<p>An orbit solution (including JPL's) does not directly infer forces. It infers a trajectory that minimizes residuals between observed sky positions (right ascension, declination, sometimes range and range-rate) and a modeled path governed by <em>assumed</em> forces.</p>
+
+<p>If the system receives: "The object was here on date A, here on date B, here on date C..." the solver's job is only to find some force model that reproduces that sequence within uncertainties.</p>
+
+<p>It does not ask:</p>
+
+<ul>
+<li>Whether the force history was smooth</li>
+<li>Whether it was continuous</li>
+<li>Whether it was physically plausible</li>
+<li>Whether it was intentional</li>
+</ul>
+
+<p>Those questions are outside the inversion problem.</p>
+
+<p>The solver is handed a connect-the-dots puzzle and told: "Make this smooth." It doesn't ask if the dots were supposed to spell S-O-S.</p>
+
+<p>I mean, think about what the solver actually sees. Maybe a few dozen position measurements scattered across weeks or months. The solver's entire job is pattern-matching: find me <em>any</em> force model that would make an object follow a path through those points. Whether that force was a gentle, continuous sublimation or three discrete kicks in different directions? Completely invisible to the fitting process.</p>
+
+<p>Orbit determination is playing "guess the curve" with three data points and a very flexible ruler.</p>
+
+<hr>
+
+<h2>Why Discrete Thrusts Masquerade as Smooth Outgassing</h2>
+
+<p>Here's the key insight that breaks most people's intuition: sparse astrometry doesn't see the thrust. It sees <em>integrated position changes</em>.</p>
+
+<p>Concrete example. Suppose the object actually experienced:</p>
+
+<ul>
+<li>A short thrust on Day 1</li>
+<li>Nothing for weeks</li>
+<li>Another thrust in a different direction on Day 40</li>
+</ul>
+
+<p>From the standpoint of sparse astrometry, the thrust itself is invisible. What's visible are integrated position changes. The solver only sees <em>where the object ended up</em>.</p>
+
+<p>It's like trying to reconstruct someone's walking pattern from three security camera snapshots: the path from Point A to Point C is documented, but whether they walked, ran, did the cha-cha, or teleported twice is completely erased from the data.</p>
+
+<p>Because of this, any sequence of small, discrete Δv events can be approximated by a continuous low-level acceleration over the same arc.</p>
+
+<p>Mathematically, this is inevitable. A piecewise velocity change (Δ<strong>v</strong>₁ + Δ<strong>v</strong>₂ + ⋯) is observationally equivalent (to first order) to ∫<strong>a</strong>(t)dt unless the data includes very dense temporal sampling during the thrust, or independent acceleration measurements.</p>
+
+<p>And usually it doesn't.</p>
+
+<p>The orbit solver sees the object's position on Monday, then again on Friday, and confidently announces: "Ah yes, steady jog the whole way." The actual sprint on Tuesday and nap on Wednesday? Gone.</p>
+
+<p>This is the mathematical equivalent of a GPS saying "continue straight for 50 miles" when the route actually involved seventeen side streets and two coffee stops. The destination's right, the route is fiction.</p>
+
+<hr>
+
+<h2>What the Marsden Model Actually Does</h2>
+
+<p>Now, Solution 42 specifically uses what's called the Marsden formalism.</p>
+
+<p>The Marsden model assumes:</p>
+
+<ul>
+<li>A fixed thrust direction basis (radial, transverse, normal; RTN coordinates)</li>
+<li>A smooth distance law (in this case, g(r) = (1 AU/r)²)</li>
+<li>Stationarity over the fit interval</li>
+</ul>
+
+<p>Here is the key point: <strong>it is not discovering that the object behaves this way. It is imposing that structure because it fits the data well enough.</strong></p>
+
+<p>The Marsden model is like putting on beer goggles for orbital mechanics: everything starts to look smooth and continuous, even when it absolutely isn't.</p>
+
+<p>If the true force history were impulsive, time-variable, or directionally switching, the Marsden parameters (A1, A2, A3) will simply become <em>effective averages</em> over the arc.</p>
+
+<p>This is why statistically "significant" A-parameters can emerge even if no physical outgassing process ever existed in that form. The parameters aren't lying; they're just reporting what averaged force <em>would</em> produce the observed motion. Not what force actually <em>did</em>.</p>
+
+<p>It's the statistical equivalent of saying "I average 65 mph on my commute" when the actual pattern was sitting in traffic for 40 minutes and then driving 90 mph in a panic. The average is correct. The story is wrong.</p>
+
+<p>The model doesn't care if the object is gently sublimating or firing thrusters like a caffeinated pinball machine. If the average works out, the fit is happy.</p>
+
+<hr>
+
+<h2>What Information Gets Destroyed</h2>
+
+<p>This is the crux.</p>
+
+<p>Orbit fitting destroys temporal force information unless the data cadence and precision are extreme.</p>
+
+<p>Specifically, it erases:</p>
+
+<ul>
+<li>Whether acceleration was continuous or impulsive</li>
+<li>Whether thrust direction changed discretely</li>
+<li>Whether forces were internally driven or externally applied</li>
+<li>Whether the force history was causal or reactive</li>
+</ul>
+
+<p>All of that is projected onto a single question: "What constant (or smoothly varying) acceleration best explains the positions?"</p>
+
+<p>Orbit fitting is a wood chipper for causality: physics goes in, smooth curves come out, and all the interesting bits are mulch.</p>
+
+<p>So yes, even radically non-natural force histories can be made to look like smooth sublimation if the cadence is coarse, the thrusts are small, and the solver is allowed flexible parameters.</p>
+
+<p>It's like asking someone to reconstruct a grocery shopping trip from a credit card total: they know $47.83 was spent, but whether the purchases were impulse ice cream or carefully selected organic vegetables is gone forever.</p>
+
+<p>The solver outputs "smooth continuous outgassing" with the same confidence whether the object is a dirty snowball or doing the Macarena in three-dimensional space.</p>
+
+<blockquote>Orbit fits are classification machines, not truth machines. They answer: "What smooth model best reproduces the observations?" They do not answer: "What actually happened physically?"</blockquote>
+
+<hr>
+
+<h2>What Would NOT Be Erasable</h2>
+
+<p>Okay, so if orbit fits can absorb almost anything, what <em>can't</em> they smooth away?</p>
+
+<p>There are signatures that cannot be smoothed away indefinitely.</p>
+
+<p><strong>A) Sharp curvature changes over short times</strong></p>
+
+<p>If the object shows sudden, localized curvature inconsistent with any smooth g(r) (especially if coincident with dense observations) then the Marsden model begins to fail locally. Averaging past a hard corner doesn't work if observers actually watched the object take it.</p>
+
+<p><strong>B) Directional incoherence</strong></p>
+
+<p>If the effective A1/A2/A3 components change sign, rotate, or require piecewise values to fit different arc segments, then the fit is no longer modeling "outgassing." It's modeling control points. At some point, the thrust direction becomes so incoherent with any passive process that the natural explanation stops making physical sense.</p>
+
+<p><strong>C) Predictive failure</strong></p>
+
+<p>This is the decisive test.</p>
+
+<p>Averaged models can always explain the past. They're perfect historians. They fail when they predict the future wrong, because the next discrete thrust does not align with the averaged history.</p>
+
+<p>December 19 is basically asking the model to put its money where its math is: "Prove it. Tell me where this thing will be next Thursday."</p>
+
+<p>If the model's prediction lands and the object doesn't, that's not a measurement error. That's the model getting caught in a lie.</p>
+
+<p>This is why December 19 correctly functions as an acid test. Averaged models are terrible fortune tellers.</p>
+
+<hr>
+
+<h2>The Uncomfortable Implication</h2>
+
+<p>So here's the thing that makes this whole situation epistemically uncomfortable, and I want to be clear: this isn't a failure of science. It's a feature of how classification systems interact with sparse data.</p>
+
+<p>Even if C/2025 N1 (ATLAS) were:</p>
+
+<ul>
+<li>Maneuvering</li>
+<li>Intermittently thrusting</li>
+<li>Reacting to external cues</li>
+</ul>
+
+<p>The default pipeline would still output: <strong>"Nongravitational acceleration consistent with outgassing."</strong></p>
+
+<p>Unless and until predictive failures accumulate, the force history becomes non-stationary in a way that cannot be averaged, or independent measurements break the degeneracy.</p>
+
+<p>The pipeline is the institutional equivalent of a very polite person who will describe literally anything as "outgassing" rather than say something awkward.</p>
+
+<p>Even if 3I/ATLAS were doing loop-de-loops and spelling "HELLO" in thrust vectors, the first ten reports would still say: "consistent with volatile sublimation."</p>
+
+<p>Because that's what the classification machinery is designed to do. Smooth models can absorb non-smooth realities. Best-fit does not imply best explanation. Model success is not evidence of mechanism.</p>
+
+<p>JPL is doing exactly what orbit determination is designed to do: minimize residuals, provide a usable ephemeris, avoid overfitting noise.</p>
+
+<p>But it does mean this: <strong>orbit fits are classification machines, not truth machines.</strong></p>
+
+<hr>
+
+<h2>Closing</h2>
+
+<p>This is not about aliens.</p>
+
+<p>It is about recognizing three things that are often conflated:</p>
+
+<ul>
+<li>Smooth models can absorb non-smooth realities</li>
+<li>Best-fit does not imply best explanation</li>
+<li>Model success is not evidence of mechanism</li>
+</ul>
+
+<p>Readers who notice this aren't rejecting science. They're noticing that inverse problems erase causality.</p>
+
+<p>That is a sophisticated insight, and a correct one.</p>
+
+<p>The cleanest way to state this is simple: <strong>Orbit determination techniques are designed to infer trajectories, not force histories.</strong> Discrete or time-variable accelerations can be mathematically absorbed into smooth nongravitational models, especially with sparse data. As a result, a good orbit fit does not uniquely identify the underlying physical mechanism. It only shows that some averaged force can reproduce the observed positions.</p>
+
+<p>That statement is entirely orthodox.</p>
+
+<p>And its implications are anything but trivial.</p>
+
+<p>People who notice the emperor has no clothes aren't conspiracy theorists. They're just the only ones in the room who've realized "the model fits" and "we know what happened" are not the same sentence.</p>
+
+<p>Science is very good at saying "the math works." It's considerably less comfortable admitting "but we actually have no idea what's going on."</p>
+
+<p>None of this tells us what C/2025 N1 (ATLAS) actually is. But it does tell us what kinds of questions the current toolkit can and can't answer. And sometimes, knowing the limits of the method matters more than having confidence in the fit.</p>
+
+<hr>
+
+<div class="technical-note">
+<p><strong>Technical note:</strong> JPL's orbit Solution 42 for C/2025 N1 (ATLAS) uses a CO₂-proxy distance law g(r) = (1 AU/r)² with nongravitational parameters A1 = 4.37×10⁻⁸ AU/day², A2 = 1.60×10⁻⁸ AU/day², and A3 = −5.18×10⁻⁹ AU/day² (solution date: December 11, 2025), available through NASA's JPL Small-Body Database. December 19, 2025 marks the interstellar object's closest approach to Earth at approximately 1.8 AU (~270 million km), providing the optimal observational window to test whether the CO₂ outgassing model's predictions match the object's actual trajectory and to observe any coma or mass-loss signatures that should accompany the required thrust.</p>
+</div>
+
+</body>
+</html>
