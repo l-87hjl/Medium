@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Where's the Coma?</title>
+</head>
+<body>
+
+<h1>Where's the Coma?</h1>
+
+<h2>Opening the Momentum Budget</h2>
+
+<p>If C/2025 N1 (ATLAS) is pushing itself around with CO₂ outgassing, there's a basic question we should probably ask: where's all the gas?</p>
+
+<p>I don't mean that rhetorically. Outgassing thrust isn't magic; it's momentum transfer. If you're accelerating a nucleus by venting material, that material has to come from somewhere, leave at some velocity, and carry enough momentum to actually move the thing. The acceleration history JPL encoded in Solution 42 isn't free. It costs mass. And once you're losing enough mass to noticeably deflect an orbit, you'd normally expect to see <em>something</em>: gas emission lines, dust scatter, photometric brightening, coma morphology, <em>something</em>.</p>
+
+<p>This isn't about "proving" what 3I/ATLAS is. It's about checking whether the numbers add up. The required mass loss to produce Solution 42's acceleration should leave observable traces. Reconciling the thrust with the observational silence requires increasingly specific assumptions. Here's how specific.</p>
+
+<hr>
+
+<h2>The Momentum Budget Constraint</h2>
+
+<p>Any outgassing-driven model implicitly makes a claim about momentum conservation. In the simplest form, it looks like this:</p>
+
+<p><strong>a ≈ (η · ṁ · v_exhaust) / M</strong></p>
+
+<p>Translation: the acceleration you get equals your mass loss rate (ṁ) times your exhaust velocity (v_exhaust) times some efficiency factor (η), all divided by the nucleus mass (M).</p>
+
+<p>So if Solution 42 is right about the acceleration history, there's a minimum ṁ needed for any plausible exhaust speed and efficiency. You can't dial the thrust up without paying for it in ejected mass.</p>
+
+<p>Now, CO₂ gas itself might be hard to detect directly. It doesn't emit strongly in visible wavelengths; you need UV or IR spectroscopy, and we haven't done comprehensive observations in those bands. Fine. But even if the gas is invisible, <em>some combination</em> of secondary effects should appear once ṁ gets large enough to push the orbit around: dust entrained in the flow, photometric brightening from increased scattering cross-section, morphological features in the coma, something.</p>
+
+<p><strong>The question becomes:</strong> Are the observational non-detections (or weak detections) compatible with the ṁ implied by the required thrust?</p>
+
+<p>And here's where it gets interesting. The answer depends on the nucleus mass. Which we don't know. Which means we need to check the whole range.</p>
+
+<hr>
+
+<h2>What We Actually Know About the Nucleus</h2>
+
+<p>The nucleus has not been directly resolved. Not by HST. Not by anyone. What we have are <em>upper limits</em> and <em>ranges</em>, not measured sizes.</p>
+
+<p>The credible published bounds, assuming reasonable cometary albedos in the 0.04–0.06 range (with caveats explicitly stated), give:</p>
+
+<ul>
+<li><strong>Diameter range:</strong> ~0.32 km to 5.6 km</li>
+<li><strong>Equivalent radius:</strong> ~0.16 km to 2.8 km</li>
+</ul>
+
+<p>Why the huge spread? Because the coma dominates the light profile. Even in HST images, there's no clean separation of the point-source nucleus from the diffuse envelope around it. That bounds (but does not fix) the nucleus mass M. Which means the momentum budget problem becomes range-based, not point-estimate.</p>
+
+<p>We're not dealing with "the nucleus is 1.2 km, therefore the coma should be this bright." We're dealing with "across the entire plausible size range consistent with HST photometry and unresolved structure, can the NG acceleration in Solution 42 coexist with weak observable activity?"</p>
+
+<p>That's testable. And it's a strong test.</p>
+
+<hr>
+
+<h2>The Two Ends of the Size Range</h2>
+
+<p>Walking through what happens at the extremes:</p>
+
+<h3>Case A: Large Nucleus (radius ~2–3 km)</h3>
+
+<p>If the nucleus is near the upper bound of the allowed range, the mass is large. To produce the observed NG acceleration, the required ṁ is correspondingly high. This is the regime where standard comets normally show:</p>
+
+<ul>
+<li>Detectable coma structure</li>
+<li>Strong gas and/or dust signatures</li>
+<li>Clear photometric brightening or rotational variability</li>
+</ul>
+
+<p><strong>The tension:</strong> This is where the coma problem hits hardest.</p>
+
+<p>If the nucleus is genuinely 2+ km in radius, CO₂ outgassing struggles to reconcile the required thrust with the observables without invoking a stack of special conditions:</p>
+
+<ul>
+<li>Extreme dust suppression (so the gas doesn't drag particles into view), <em>and</em></li>
+<li>High collimation (so the thrust is efficient and the mass loss stays hidden), <em>and</em></li>
+<li>Favorable viewing geometry (so we're not looking down the jet axis)</li>
+</ul>
+
+<p>That's not one correction. That's a coordinated set of coincidences, all required simultaneously. This isn't the "broad natural basin of comet behavior" anymore. This is a narrow corner of parameter space where everything has to line up just right.</p>
+
+<h3>Case B: Small Nucleus (radius ~0.15–0.3 km)</h3>
+
+<p>If the nucleus sits near the lower bound, the mass drops significantly. The required ṁ to produce the same acceleration also drops. In this regime, the thrust <em>could</em>, in principle, be supplied by gas production low enough to evade current detection limits.</p>
+
+<p><strong>But:</strong> this only works if several things are true:</p>
+
+<ul>
+<li>The nucleus really is near the extreme low end of the allowed distribution</li>
+<li>The albedo is low enough that brightness estimates aren't contaminated</li>
+<li>The coma contributes most of the light while remaining morphologically subtle</li>
+<li>Thrust efficiency isn't unusually low (which would drive ṁ back up)</li>
+</ul>
+
+<p>This regime is <em>possible</em>. But it's not generic. It's a fine-tuned corner of parameter space, not the broad natural outcome. If the nucleus is 0.2 km in radius, then HST photometry, coma scattering, and activity levels all happen to be sitting in the exact configuration that allows weak activity to hide.</p>
+
+<p>Can it happen? Sure. Is it the <em>expected</em> result? Not really.</p>
+
+<hr>
+
+<h2>The "Easy Saves" and When They Stop Working</h2>
+
+<p>With the nucleus uncertainty properly bounded, here's how the usual escape hatches hold up.</p>
+
+<h3>1) "The nucleus is very small, so little mass loss is needed"</h3>
+
+<ul>
+<li>✓ Still viable</li>
+<li>⚠ Only if the nucleus is near the lower bound of current constraints</li>
+<li>✗ Not viable across most of the allowed range</li>
+</ul>
+
+<p>This used to be a free parameter that could be tuned. Now it's a conditional rescue that only works in one corner of the allowed space. It's not falsified, but it's not general, either.</p>
+
+<h3>2) "Dust-poor CO₂ outgassing"</h3>
+
+<ul>
+<li>✓ Plausible in moderation</li>
+<li>✗ Becomes strained if required to suppress observables across the entire allowed size range</li>
+</ul>
+
+<p>Dust suppression can help. But it can't simultaneously rescue both the large-nucleus and small-nucleus scenarios without being dialed to very specific values. It's doing a lot of work.</p>
+
+<h3>3) "Highly collimated jets"</h3>
+
+<ul>
+<li>✓ Physically real; comets do this</li>
+<li>✗ Requires persistent, stable, high-efficiency collimation over long arcs to hide total mass loss</li>
+</ul>
+
+<p>Collimation is real. But invoking it as a systematic explanation for why we see nothing across multiple observation epochs starts to feel like adding epicycles. It's not impossible. It's just doing a lot of lifting.</p>
+
+<h3>4) "We just haven't looked in the right band yet"</h3>
+
+<ul>
+<li>✓ Legitimate caveat (especially for CO₂, which requires UV/IR spectroscopy)</li>
+<li>✗ Weakens if multiple independent diagnostics remain quiet while required thrust stays high</li>
+</ul>
+
+<p>This remains an open observational question. It's not a rebuttal; it's a reminder that absence of evidence isn't evidence of absence. But if enough null results stack up across enough independent channels, the "we haven't looked properly" excuse starts running out of room.</p>
+
+<hr>
+
+<h2>What This Does to the Likelihood Landscape</h2>
+
+<p>Here's what changes when the nucleus constraints get folded in properly:</p>
+
+<p>The natural CO₂ outgassing model is no longer generically safe. It survives <em>conditionally</em>, not robustly.</p>
+
+<p>It now occupies narrower parameter space:</p>
+
+<ul>
+<li>Small nucleus <em>and</em></li>
+<li>Efficient thrust conversion <em>and</em></li>
+<li>Dust-poor activity <em>and</em></li>
+<li>Favorable viewing geometry <em>and/or</em></li>
+<li>Observational blind spots in the right bands</li>
+</ul>
+
+<p>That's not falsification. But it <em>is</em> model strain with quantified boundaries. This isn't "comets do weird things sometimes." This is "this specific combination of properties, all at once, in this specific configuration."</p>
+
+<p>Which, you know, <em>could</em> be true. But it's not the baseline anymore.</p>
+
+<hr>
+
+<h2>The Honest Statement</h2>
+
+<p>Most researchers working on 3I/ATLAS would say: "Because the nucleus is unresolved and the size range is broad, outgassing-driven acceleration remains viable."</p>
+
+<p>They would also concede: larger nucleus scenarios are increasingly difficult to reconcile with weak observable activity.</p>
+
+<p>Tighter constraints on either the nucleus size or the gas production rate would rapidly sharpen the issue. Right now, we're living in the uncertainty buffer. But that buffer isn't infinite.</p>
+
+<blockquote>
+<p><strong>The defensible takeaway:</strong> The nucleus hasn't been resolved, so its mass is uncertain. However, across the plausible mass range implied by unresolved photometry, the non-gravitational acceleration inferred in Solution 42 would <em>normally</em> be accompanied by detectable activity. Reconciling the required thrust with the continued absence of such signatures requires multiple coincident assumptions, not a single correction.</p>
+</blockquote>
+
+<p>Those assumptions can be made. But they have to be acknowledged.</p>
+
+<hr>
+
+<h2>The Conditional, Not the Default</h2>
+
+<p>This isn't about proving what 3I/ATLAS is. It's about showing what assumptions are required to keep the "standard comet" explanation alive.</p>
+
+<p>At the small-nucleus end: still works, barely. Requires low mass, efficient thrust, dust suppression, and favorable geometry, but it's in bounds.</p>
+
+<p>Across most of the range: requires stacked special conditions. Not impossible. Just increasingly specific.</p>
+
+<p>At the large-nucleus end: genuinely struggling. The momentum budget doesn't want to cooperate without invoking multiple coincident rescues.</p>
+
+<p>The natural explanation isn't ruled out. But it's not the <em>default</em> anymore; it's the <em>conditional</em> one. And the more we learn about the nucleus size, the gas production rates, and the long-term photometric behavior, the narrower that conditional space gets.</p>
+
+<p>The comet hypothesis can be kept alive. It just can't pretend to be sitting comfortably in the middle of ordinary comet parameter space anymore.</p>
+
+<p>It's not.</p>
+
+</body>
+</html>
