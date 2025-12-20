@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JPL Small-Body Database - Solution 42 (C/2025 N1 ATLAS) - Complete Archive</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #292929;
+            background: #fafafa;
+        }
+        .header {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 2.2em;
+            line-height: 1.2;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+        .subtitle {
+            font-size: 1.1em;
+            color: #666;
+            margin: 5px 0;
+        }
+        .section {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 {
+            font-size: 1.5em;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: #1a1a1a;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            font-weight: 600;
+            background: #f8f8f8;
+            color: #1a1a1a;
+        }
+        td:first-child {
+            font-weight: 600;
+            color: #333;
+        }
+        .numeric {
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+        .note {
+            background: #fff9e6;
+            padding: 15px;
+            border-left: 4px solid #ffd700;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+        .missing {
+            background: #f0f0f0;
+            padding: 15px;
+            border-left: 4px solid #999;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+        strong {
+            font-weight: 600;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .metadata {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>JPL Small-Body Database — Solution 42</h1>
+    <div class="subtitle">Complete Archive: C/2025 N1 (ATLAS)</div>
+    <div class="subtitle">Hyperbolic Comet with Nongravitational Acceleration</div>
+    <div class="metadata">
+        Solution Date: 2025-Dec-11 08:30:40 UTC<br>
+        Producer: Davide Farnocchia (JPL)<br>
+        Source: JPL Small-Body Database (SSD)
+    </div>
+</div>
+
+<div class="section">
+    <h2>Object Identification</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Designation</td>
+                <td>C/2025 N1 (ATLAS)</td>
+            </tr>
+            <tr>
+                <td>SPKID</td>
+                <td class="numeric">1004083</td>
+            </tr>
+            <tr>
+                <td>Classification</td>
+                <td>Hyperbolic Comet</td>
+            </tr>
+            <tr>
+                <td>Source</td>
+                <td>JPL Small-Body Database (SSD)</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>Orbit Reference</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Orbit Solution</td>
+                <td>JPL 42</td>
+            </tr>
+            <tr>
+                <td>Reference Frame</td>
+                <td>Heliocentric</td>
+            </tr>
+            <tr>
+                <td>Ecliptic</td>
+                <td>IAU76 / J2000</td>
+            </tr>
+            <tr>
+                <td>Epoch (JD)</td>
+                <td class="numeric">2460891.5</td>
+            </tr>
+            <tr>
+                <td>Epoch (Calendar)</td>
+                <td>2025-Aug-04.0</td>
+            </tr>
+            <tr>
+                <td>Time Scale</td>
+                <td>TDB</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>Osculating Orbital Elements (Epoch 2460891.5 TDB)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Element</th>
+                <th>Value</th>
+                <th>Uncertainty (1-σ)</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>e</strong> (eccentricity)</td>
+                <td class="numeric">6.139433723877776</td>
+                <td class="numeric">2.0913E-5</td>
+                <td>Hyperbolic</td>
+            </tr>
+            <tr>
+                <td><strong>a</strong> (semi-major axis, au)</td>
+                <td class="numeric">−0.2639236753959868</td>
+                <td class="numeric">6.8817E-7</td>
+                <td>Negative → hyperbolic</td>
+            </tr>
+            <tr>
+                <td><strong>q</strong> (perihelion distance, au)</td>
+                <td class="numeric">1.356418237859906</td>
+                <td class="numeric">2.4613E-6</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>i</strong> (inclination, deg)</td>
+                <td class="numeric">175.1130926962195</td>
+                <td class="numeric">1.4685E-5</td>
+                <td>Retrograde</td>
+            </tr>
+            <tr>
+                <td><strong>Ω</strong> (longitude of node, deg)</td>
+                <td class="numeric">322.1566409267227</td>
+                <td class="numeric">2.2409E-4</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>ω</strong> (argument of perihelion, deg)</td>
+                <td class="numeric">128.0097228929673</td>
+                <td class="numeric">2.3069E-4</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>M</strong> (mean anomaly, deg)</td>
+                <td class="numeric">−628.6560244989512</td>
+                <td class="numeric">2.1868E-3</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>tp</strong> (perihelion time, JD)</td>
+                <td class="numeric">2460977.982161119929</td>
+                <td class="numeric">3.9032E-5</td>
+                <td>2025-Oct-29.48216112</td>
+            </tr>
+            <tr>
+                <td><strong>n</strong> (mean motion, deg/day)</td>
+                <td class="numeric">7.269198830810477</td>
+                <td class="numeric">2.8431E-5</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>Period</strong></td>
+                <td>not defined</td>
+                <td>—</td>
+                <td>Hyperbolic</td>
+            </tr>
+            <tr>
+                <td><strong>Q</strong> (aphelion, au)</td>
+                <td>not defined</td>
+                <td>—</td>
+                <td>Hyperbolic</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>Nongravitational Model Parameters</h2>
+    <div class="note">
+        <strong>Model:</strong> CO₂ sublimation<br>
+        <strong>Force law:</strong> g(r) = (1 au / r)²
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Value (au/d²)</th>
+                <th>Uncertainty (1-σ)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>A1</strong> (radial)</td>
+                <td class="numeric">4.368369323229773E-8</td>
+                <td class="numeric">4.056E-9</td>
+            </tr>
+            <tr>
+                <td><strong>A2</strong> (transverse)</td>
+                <td class="numeric">1.595561392731133E-8</td>
+                <td class="numeric">5.48E-9</td>
+            </tr>
+            <tr>
+                <td><strong>A3</strong> (normal)</td>
+                <td class="numeric">−5.17829270686453E-9</td>
+                <td class="numeric">5.358E-10</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 style="font-size: 1.1em; margin-top: 25px; margin-bottom: 10px;">Additional Model Flags</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>ALN</td>
+                <td class="numeric">1</td>
+            </tr>
+            <tr>
+                <td>NK</td>
+                <td class="numeric">0</td>
+            </tr>
+            <tr>
+                <td>NM</td>
+                <td class="numeric">2</td>
+            </tr>
+            <tr>
+                <td>NN</td>
+                <td class="numeric">0</td>
+            </tr>
+            <tr>
+                <td>R0</td>
+                <td class="numeric">1 au</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>Physical Parameters</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+                <th>Units</th>
+                <th>Sigma</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>M1</strong> Comet total magnitude</td>
+                <td class="numeric">12.5</td>
+                <td>mag</td>
+                <td class="numeric">0.9</td>
+                <td>2-parameter fit, 713 obs, autocmod 3.0g</td>
+            </tr>
+            <tr>
+                <td><strong>K1</strong> Magnitude slope</td>
+                <td class="numeric">4.5</td>
+                <td>—</td>
+                <td>—</td>
+                <td>autocmod 3.0g</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>MOID (Minimum Orbit Intersection Distance)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Body</th>
+                <th>MOID (au)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Earth</strong></td>
+                <td class="numeric">0.365134</td>
+            </tr>
+            <tr>
+                <td><strong>Jupiter</strong></td>
+                <td class="numeric">0.24669</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>Observation & Fit Statistics</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Solution date</td>
+                <td>2025-Dec-11 08:30:40</td>
+            </tr>
+            <tr>
+                <td>Observations used</td>
+                <td class="numeric">758</td>
+            </tr>
+            <tr>
+                <td>Data-arc span</td>
+                <td>209 days</td>
+            </tr>
+            <tr>
+                <td>First observation</td>
+                <td>2025-May-15</td>
+            </tr>
+            <tr>
+                <td>Last observation</td>
+                <td>2025-Dec-10</td>
+            </tr>
+            <tr>
+                <td>Planetary ephemeris</td>
+                <td>DE441</td>
+            </tr>
+            <tr>
+                <td>Small-body perturbers</td>
+                <td>SB441-N16</td>
+            </tr>
+            <tr>
+                <td>Normalized RMS</td>
+                <td class="numeric">0.40939</td>
+            </tr>
+            <tr>
+                <td>Producer</td>
+                <td>Davide Farnocchia</td>
+            </tr>
+            <tr>
+                <td>Source</td>
+                <td>JPL</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>Explicitly Missing / Not Available Data</h2>
+    <div class="missing">
+        <p><strong>The following data fields were not provided in Solution 42 screenshots or are not shown:</strong></p>
+        <ul style="margin: 10px 0; padding-left: 20px;">
+            <li>Close approach data (detailed encounter information)</li>
+            <li>Absolute magnitude H</li>
+            <li>Nucleus size estimate</li>
+            <li>Albedo</li>
+            <li>Mass-loss rate</li>
+            <li>CO₂ production rate</li>
+            <li>Rotational state / pole solution</li>
+            <li>Covariance matrix</li>
+            <li>Astrometric residuals by observatory</li>
+            <li>Full nongravitational parameter correlations</li>
+            <li>Alternative force-law fits (e.g., H₂O, CO)</li>
+        </ul>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Integrity Note</h2>
+    <div class="note">
+        <p><strong>This reconstruction:</strong></p>
+        <ul style="margin: 10px 0; padding-left: 20px;">
+            <li>Uses only values visible in original JPL screenshots</li>
+            <li>Does not normalize, reinterpret, or update to later solutions</li>
+            <li>Preserves Solution 42's internal state exactly as displayed</li>
+            <li>Flags all absent fields transparently</li>
+            <li>Serves as a permanent archive of JPL Solution 42 as of 2025-Dec-11</li>
+        </ul>
+        <p style="margin-top: 15px;"><strong>Purpose:</strong> This document provides a complete, accessible reference for JPL Small-Body Database Solution 42, enabling researchers and interested parties to verify claims, compare with other solutions (including Solution 40, 41, and 44), and maintain a historical record of the orbital parameters and physical model as they stood on December 11, 2025.</p>
+    </div>
+</div>
+
+<div class="section" style="text-align: center; font-size: 0.85em; color: #666;">
+    <p>Archive created from JPL Small-Body Database screenshots</p>
+    <p>Original source: <a href="https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html#/?sstr=3i&view=OPC" style="color: #0066cc;">https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html#/?sstr=3i&view=OPC</a></p>
+    <p>Solution 42 date: 2025-Dec-11 08:30:40 UTC</p>
+</div>
+
+</body>
+</html>
