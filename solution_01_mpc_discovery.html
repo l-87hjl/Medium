@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solution 1 (MPC MPEC 2025-N12) - Discovery Orbit for C/2025 N1 (ATLAS)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #292929;
+            background: #fafafa;
+        }
+        .header {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 2.2em;
+            line-height: 1.2;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+        .subtitle {
+            font-size: 1.1em;
+            color: #666;
+            margin: 5px 0;
+        }
+        .section {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 {
+            font-size: 1.5em;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: #1a1a1a;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            font-weight: 600;
+            background: #f8f8f8;
+            color: #1a1a1a;
+        }
+        td:first-child {
+            font-weight: 600;
+            color: #333;
+        }
+        .numeric {
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+        .note {
+            background: #fff9e6;
+            padding: 15px;
+            border-left: 4px solid #ffd700;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+        .warning {
+            background: #fff3e0;
+            padding: 15px;
+            border-left: 4px solid #ff9800;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+        .discovery {
+            background: #e3f2fd;
+            padding: 15px;
+            border-left: 4px solid #2196f3;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+        .not-applicable {
+            background: #f5f5f5;
+            padding: 15px;
+            border-left: 4px solid #9e9e9e;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+        strong {
+            font-weight: 600;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .metadata {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 10px;
+        }
+        .provenance {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 2px solid #4caf50;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Solution 1 — Discovery / Proto-Orbit</h1>
+    <div class="subtitle">First Published Orbital Solution: C/2025 N1 (ATLAS)</div>
+    <div class="subtitle">MPC Early-Arc Hyperbolic Orbit (Purely Gravitational)</div>
+    <div class="metadata">
+        Publication Date: 2025-Jul-02<br>
+        Source: Minor Planet Electronic Circular (MPEC 2025-N12)<br>
+        Authority: Minor Planet Center (MPC)
+    </div>
+</div>
+
+<div class="provenance">
+    <h2 style="margin-top: 0; border: none; padding: 0;">What This Page Is (and Is Not)</h2>
+    <p><strong>This is NOT a JPL Small-Body Database solution.</strong></p>
+    <p>This is a reconstruction of the <strong>earliest published orbital state</strong> for C/2025 N1 (ATLAS), based on:</p>
+    <ul style="margin: 10px 0; padding-left: 20px;">
+        <li><strong>MPEC 2025-N12</strong> (Minor Planet Electronic Circular, issued July 2, 2025)</li>
+        <li>Early observation arc: 122 observations spanning June 14 – July 2, 2025</li>
+        <li><strong>Purely gravitational orbit</strong> — no nongravitational force modeling</li>
+        <li>Published by the Minor Planet Center (MPC), not JPL</li>
+    </ul>
+    <p><strong>Purpose:</strong> This solution represents the moment of interstellar confirmation and serves as the historical anchor for all subsequent JPL solutions (40+). It demonstrates how quickly the object's orbital parameters stabilized and shows the epistemic transition from discovery to refined modeling.</p>
+</div>
+
+<div class="section">
+    <div class="warning">
+        <strong>Methodological Note:</strong> Solution 1 represents a different class of orbital determination than JPL Solutions 40-44.
+        <ul style="margin: 10px 0; padding-left: 20px;">
+            <li>MPC early-arc orbit vs. JPL refined solutions</li>
+            <li>No nongravitational forces modeled (A1, A2, A3 do not exist at this stage)</li>
+            <li>Shorter observation arc (18 days vs. 200+ days)</li>
+            <li>Larger uncertainties expected and normal for discovery-stage orbits</li>
+            <li><strong>Classification (hyperbolic/interstellar) confirmed, not overturned by later solutions</strong></li>
+        </ul>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Object Identification</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Designation</td>
+                <td>C/2025 N1 (ATLAS)</td>
+            </tr>
+            <tr>
+                <td>SPKID</td>
+                <td class="numeric">1004083</td>
+            </tr>
+            <tr>
+                <td>Classification</td>
+                <td>Hyperbolic Comet (Interstellar)</td>
+            </tr>
+            <tr>
+                <td>Source</td>
+                <td>Minor Planet Center (MPC)</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>Orbit Reference</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Orbit Solution</td>
+                <td>MPC MPEC 2025-N12 (Proto-Solution / Discovery Orbit)</td>
+            </tr>
+            <tr>
+                <td>Reference Frame</td>
+                <td>Heliocentric</td>
+            </tr>
+            <tr>
+                <td>Ecliptic</td>
+                <td>J2000</td>
+            </tr>
+            <tr>
+                <td>Epoch (JD)</td>
+                <td class="numeric">2460800.5</td>
+            </tr>
+            <tr>
+                <td>Epoch (Calendar)</td>
+                <td>2025-May-05.0 TT</td>
+            </tr>
+            <tr>
+                <td>Time Scale</td>
+                <td>TT (Terrestrial Time)</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="note">
+        <strong>Note:</strong> This epoch (May 5) predates the observation arc (Jun 14 - Jul 2) by design.
+        MPC early-arc orbits typically use standardized epochs for comparison purposes.
+    </div>
+</div>
+
+<div class="section">
+    <h2>Osculating Orbital Elements (Epoch 2460800.5 TT)</h2>
+    <div class="note">
+        <strong>Note:</strong> These elements are osculating at the listed epoch (2460800.5 / 2025-May-05.0).
+        This epoch differs from later JPL solutions, so direct numerical comparisons will show epoch-related differences.
+        <strong>This is a purely gravitational orbit with no nongravitational force modeling.</strong>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Element</th>
+                <th>Value</th>
+                <th>Uncertainty (1-σ)</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>e</strong> (eccentricity)</td>
+                <td class="numeric">6.2769203</td>
+                <td>Not published</td>
+                <td>Hyperbolic (gravity-only fit)</td>
+            </tr>
+            <tr>
+                <td><strong>a</strong> (semi-major axis, au)</td>
+                <td>Not published in MPEC</td>
+                <td>—</td>
+                <td>Can be derived from e and q</td>
+            </tr>
+            <tr>
+                <td><strong>q</strong> (perihelion distance, au)</td>
+                <td class="numeric">1.3745928</td>
+                <td>Not published</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>i</strong> (inclination, deg)</td>
+                <td class="numeric">175.11669</td>
+                <td>Not published</td>
+                <td>Retrograde</td>
+            </tr>
+            <tr>
+                <td><strong>Ω</strong> (longitude of node, deg)</td>
+                <td class="numeric">322.27219</td>
+                <td>Not published</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>ω</strong> (argument of perihelion, deg)</td>
+                <td class="numeric">127.79317</td>
+                <td>Not published</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>M</strong> (mean anomaly, deg)</td>
+                <td>Not published in MPEC</td>
+                <td>—</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>T</strong> (perihelion time, TT)</td>
+                <td class="numeric">2025 Oct 29.21095</td>
+                <td>Not published</td>
+                <td>JD 2460977.71095</td>
+            </tr>
+            <tr>
+                <td><strong>n</strong> (mean motion, deg/day)</td>
+                <td>Not published in MPEC</td>
+                <td>—</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>Period</strong></td>
+                <td>not defined</td>
+                <td>—</td>
+                <td>Hyperbolic</td>
+            </tr>
+            <tr>
+                <td><strong>Q</strong> (aphelion, au)</td>
+                <td>not defined</td>
+                <td>—</td>
+                <td>Hyperbolic</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>Nongravitational Model Parameters</h2>
+    <div class="not-applicable">
+        <strong>NOT APPLICABLE AT THIS SOLUTION STAGE</strong>
+        <p>MPEC 2025-N12 uses a <strong>purely gravitational orbit model</strong>. Nongravitational parameters (A1, A2, A3) do not exist at this stage of orbital determination.</p>
+        <p><strong>Why this is normal:</strong> Early-arc discovery orbits typically assume gravity-only motion until:</p>
+        <ul style="margin: 10px 0; padding-left: 20px;">
+            <li>Sufficient observation arc length (months, not days)</li>
+            <li>Observable deviations from pure gravity</li>
+            <li>Physical evidence of outgassing or volatile activity</li>
+        </ul>
+        <p>JPL Solutions 40+ introduce CO₂ sublimation modeling with A1, A2, A3 parameters based on 200+ day arcs.</p>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Physical Parameters</h2>
+    <div class="not-applicable">
+        <strong>NOT PUBLISHED IN MPEC 2025-N12</strong>
+        <p>Photometric parameters (M1 comet total magnitude, K1 magnitude slope) are not included in this early MPC orbital circular.</p>
+        <p>These parameters require longer-term photometric monitoring and appear in later JPL SBDB solutions.</p>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Observation & Fit Statistics</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Publication date</td>
+                <td>2025-Jul-02</td>
+            </tr>
+            <tr>
+                <td>Observations used</td>
+                <td class="numeric">122</td>
+            </tr>
+            <tr>
+                <td>Data-arc span</td>
+                <td>18 days</td>
+            </tr>
+            <tr>
+                <td>First observation</td>
+                <td>2025-Jun-14</td>
+            </tr>
+            <tr>
+                <td>Last observation</td>
+                <td>2025-Jul-02</td>
+            </tr>
+            <tr>
+                <td>Mean residual</td>
+                <td class="numeric">0.3 arcsec</td>
+            </tr>
+            <tr>
+                <td>Source</td>
+                <td>Minor Planet Center (MPC)</td>
+            </tr>
+            <tr>
+                <td>Reference</td>
+                <td>MPEC 2025-N12</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="note">
+        <strong>Comparison with later solutions:</strong> This 18-day arc compares to 200+ day arcs in JPL Solutions 40-44.
+        The relatively short arc and purely gravitational model are normal and expected for discovery-stage orbits.
+    </div>
+</div>
+
+<div class="section">
+    <h2>Known Limitations (Expected for Discovery Orbits)</h2>
+    <div class="warning">
+        <p><strong>This solution is expected to be refined by later observations — but the core classification remains valid.</strong></p>
+        <ul style="margin: 10px 0; padding-left: 20px;">
+            <li><strong>Short observation arc</strong> (18 days vs. 200+ days in later solutions)</li>
+            <li><strong>Large uncertainty envelope</strong> (uncertainties not published in MPEC)</li>
+            <li><strong>No nongravitational modeling</strong> (assumed pure gravity)</li>
+            <li><strong>Subject to rapid revision</strong> as more observations accumulate</li>
+            <li><strong>Eccentricity appears higher</strong> (6.28 vs. ~6.14 in later solutions) due to missing NG forces</li>
+        </ul>
+        <p><strong>What did NOT change:</strong> The hyperbolic/interstellar classification was confirmed, not overturned, by all subsequent solutions.</p>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Comparison to Later JPL Solutions (40-44)</h2>
+    <div class="discovery">
+        <p><strong>Solution 1 → Solution 40 represents the epistemic transition from discovery to refined modeling:</strong></p>
+
+        <table style="margin-top: 15px;">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Solution 1 (MPC)</th>
+                    <th>Solution 40 (JPL)</th>
+                    <th>Change</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Date</strong></td>
+                    <td>2025-Jul-02</td>
+                    <td>2025-Dec-08</td>
+                    <td>+158 days</td>
+                </tr>
+                <tr>
+                    <td><strong>Observations</strong></td>
+                    <td class="numeric">122</td>
+                    <td class="numeric">751</td>
+                    <td>+629 obs</td>
+                </tr>
+                <tr>
+                    <td><strong>Arc span</strong></td>
+                    <td>18 days</td>
+                    <td>205 days</td>
+                    <td>+187 days</td>
+                </tr>
+                <tr>
+                    <td><strong>Eccentricity</strong></td>
+                    <td class="numeric">6.2769203</td>
+                    <td class="numeric">6.13942368</td>
+                    <td>−0.1375 (NG forces account for apparent excess)</td>
+                </tr>
+                <tr>
+                    <td><strong>Perihelion (q)</strong></td>
+                    <td class="numeric">1.3745928 au</td>
+                    <td class="numeric">1.356416368 au</td>
+                    <td>−0.018 au</td>
+                </tr>
+                <tr>
+                    <td><strong>Perihelion time</strong></td>
+                    <td>Oct 29.21095</td>
+                    <td>Oct 29.48216</td>
+                    <td>+6.5 hours</td>
+                </tr>
+                <tr>
+                    <td><strong>Inclination</strong></td>
+                    <td class="numeric">175.11669°</td>
+                    <td class="numeric">175.11309°</td>
+                    <td>−0.0036° (stable)</td>
+                </tr>
+                <tr>
+                    <td><strong>NG Forces</strong></td>
+                    <td>None (gravity-only)</td>
+                    <td>CO₂ model (A1/A2/A3)</td>
+                    <td>Physics model added</td>
+                </tr>
+                <tr>
+                    <td><strong>Classification</strong></td>
+                    <td>Hyperbolic/Interstellar</td>
+                    <td>Hyperbolic/Interstellar</td>
+                    <td><strong>CONFIRMED</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top: 15px;"><strong>Key insights from this comparison:</strong></p>
+        <ul style="margin: 10px 0; padding-left: 20px;">
+            <li>Inclination remained remarkably stable (< 0.004° change)</li>
+            <li>Perihelion time shifted by only 6.5 hours despite 10× longer arc</li>
+            <li>Eccentricity decrease reflects nongravitational forces, not classification error</li>
+            <li>Core hyperbolic/interstellar classification never reversed</li>
+            <li>Demonstrates rapid convergence rather than fundamental revision</li>
+        </ul>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Why Solution 1 Still Matters</h2>
+    <div class="note">
+        <p><strong>Historical and Scientific Significance:</strong></p>
+        <ul style="margin: 10px 0; padding-left: 20px;">
+            <li><strong>Moment of interstellar confirmation</strong> — first published orbit confirming hyperbolic trajectory</li>
+            <li><strong>Anchors the solution sequence</strong> — without Solution 1, Solutions 40+ appear ex nihilo</li>
+            <li><strong>Demonstrates epistemic continuity</strong> — later solutions refine but don't overturn</li>
+            <li><strong>Shows rapid convergence</strong> — key parameters stabilize quickly despite model changes</li>
+            <li><strong>Establishes baseline</strong> — enables quantitative comparison of how much (or little) actually changed</li>
+        </ul>
+        <p><strong>Methodological legitimacy:</strong> This approach mirrors how astronomers treat early GRB localizations,
+        first LIGO triggers, and initial NEO impact probabilities — not discarded, but preserved as historical solution states.</p>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Integrity Note</h2>
+    <div class="note">
+        <p><strong>This reconstruction:</strong></p>
+        <ul style="margin: 10px 0; padding-left: 20px;">
+            <li>Uses only values published in MPEC 2025-N12</li>
+            <li>Explicitly marks unpublished parameters as "Not published in MPEC"</li>
+            <li>Does not back-fill nongravitational parameters that did not exist at this stage</li>
+            <li>Preserves the discovery-era orbital state exactly as published</li>
+            <li>Clearly distinguishes MPC methodology from JPL SBDB methodology</li>
+            <li>Serves as the historical anchor for all subsequent JPL solutions</li>
+        </ul>
+        <p style="margin-top: 15px;"><strong>Provenance:</strong> This is a <strong>reconstruction</strong> of the earliest published
+        orbital solution, not a reinterpretation or retroactive fit. All numerical values come directly from the official
+        Minor Planet Center circular MPEC 2025-N12, issued July 2, 2025.</p>
+    </div>
+</div>
+
+<div class="section" style="text-align: center; font-size: 0.85em; color: #666;">
+    <p>Archive created from Minor Planet Center MPEC 2025-N12</p>
+    <p>Original source: <a href="https://minorplanetcenter.net/mpec/K25/K25N12.html" style="color: #0066cc;">https://minorplanetcenter.net/mpec/K25/K25N12.html</a></p>
+    <p>Publication date: 2025-Jul-02</p>
+    <p style="margin-top: 15px; font-style: italic;">
+        This represents the first published orbital solution confirming C/2025 N1 (ATLAS) as a hyperbolic/interstellar object.
+    </p>
+</div>
+
+</body>
+</html>
