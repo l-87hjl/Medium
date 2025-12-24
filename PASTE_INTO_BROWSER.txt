@@ -1,0 +1,109 @@
+================================================================================
+COPY AND PASTE THIS URL INTO YOUR BROWSER
+================================================================================
+
+Method 1: Simple URL (let browser handle encoding)
+---------------------------------------------------
+
+https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND='1004083;'&OBJ_DATA='YES'&MAKE_EPHEM='YES'&EPHEM_TYPE='OBSERVER'&CENTER='@G96'&TLIST='2025-12-19 01:21:40'&QUANTITIES='1,3,36,37'&TIME_DIGITS='SECONDS'&EXTRA_PREC='YES'&CSV_FORMAT='NO'
+
+
+Method 2: Fully URL-encoded (if Method 1 doesn't work)
+-------------------------------------------------------
+
+https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND=%271004083%3B%27&OBJ_DATA=%27YES%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27%40G96%27&TLIST=%272025-12-19%2001%3A21%3A40%27&QUANTITIES=%271%2C3%2C36%2C37%27&TIME_DIGITS=%27SECONDS%27&EXTRA_PREC=%27YES%27&CSV_FORMAT=%27NO%27
+
+
+What You'll Get:
+----------------
+
+A large text response. Look for this section:
+
+    $$SOE
+     2025-Dec-19 01:21:40.0000 *  HH MM SS.SSS +DD MM SS.SS  ...  POS_3sig
+    $$EOE
+
+The data between $$SOE and $$EOE is what you need.
+
+
+What to Extract:
+----------------
+
+From that line, copy these three values:
+
+1. RA:  The time-like numbers (e.g., "11 05 53.640")
+2. Dec: The angle with sign (e.g., "+05 24 55.44")
+3. POS_3sigma: The uncertainty number at the end (e.g., "0.310")
+
+
+Where to Put Them:
+------------------
+
+Edit the file: comet_residuals_manual_entry.py
+
+Change these lines:
+
+    CALC_RA_HMS = "XX XX XX.XXX"   # ← Paste RA here
+    CALC_DEC_DMS = "+XX XX XX.XX"  # ← Paste Dec here
+    POS_3SIGMA = None              # ← Paste 3-sigma here
+
+Example:
+
+    CALC_RA_HMS = "11 05 53.640"
+    CALC_DEC_DMS = "+05 24 55.44"
+    POS_3SIGMA = 0.310
+
+Then run:
+
+    python3 comet_residuals_manual_entry.py
+
+
+Alternative: Web Interface
+--------------------------
+
+If the API URLs don't work, use the graphical web interface:
+
+https://ssd.jpl.nasa.gov/horizons/app.html
+
+Enter:
+  - Target: C/2025 N1 (or 1004083)
+  - Observer: G96
+  - Time: 2025-12-19 01:21:40
+  - Table Settings → Select quantities: 1,3,36,37
+  - Extra precision: YES
+  - Time digits: SECONDS
+
+Click "Generate Ephemeris" and extract the values from the table.
+
+
+Quick Test:
+-----------
+
+To verify your connection works, first try a simpler query:
+
+https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND='1004083;'
+
+This should return basic information about C/2025 N1 (ATLAS).
+
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+Error: "BATVAR: syntax or missing closing quote"
+→ Use Method 2 (fully URL-encoded version)
+
+Error: "Cannot find COMMAND object"
+→ Make sure you include the semicolon: '1004083;'
+
+Error: "No matches found for CENTER"
+→ Make sure you include the @ symbol: '@G96'
+
+Can't access the URL at all?
+→ Use the web interface instead (link above)
+
+Need help?
+→ See JPL_HORIZONS_QUERY_EXAMPLES.md for detailed instructions
+
+
+================================================================================
