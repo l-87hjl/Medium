@@ -1,0 +1,98 @@
+================================================================================
+HOW TO PROVIDE OBSERVATIONS FOR SOLUTION 44 TABLE GENERATION
+================================================================================
+
+I've created scripts to generate a Solution 44 comparison table, but I need
+the observations data from:
+
+  https://l-87hjl.github.io/Medium/observations_20251220-23.html
+
+Unfortunately, I can't access this URL from my current environment.
+
+================================================================================
+OPTION 1: Save the HTML File
+================================================================================
+
+1. Open the URL in your browser:
+   https://l-87hjl.github.io/Medium/observations_20251220-23.html
+
+2. Save the page (Ctrl+S / Cmd+S) as:
+   observations_20251220-23.html
+
+3. Place it in the /home/user/Medium/ directory
+
+4. Run:
+   python3 parse_observations_html.py observations_20251220-23.html
+
+5. Then:
+   python3 generate_solution44_table.py observations.csv
+
+================================================================================
+OPTION 2: Create CSV Directly
+================================================================================
+
+Create a file called observations.csv with this format:
+
+  timestamp,observatory,obs_ra,obs_dec
+  2025-12-20 01:30:00,G96,11 06 10.123,+05 25 08.45
+  2025-12-21 02:15:00,703,11 07 40.567,+05 27 30.12
+  ...
+
+Then run:
+  python3 generate_solution44_table.py observations.csv
+
+================================================================================
+OPTION 3: Tell Me the Data
+================================================================================
+
+If you can provide the observation data in any format, I can convert it.
+
+For example, paste the table or list here and I'll create the CSV.
+
+================================================================================
+OPTION 4: Use Template to Test
+================================================================================
+
+To test the scripts work, use the template:
+
+  python3 generate_solution44_table.py observations_template.csv
+
+This uses example data and will create a demo table.
+
+================================================================================
+WHAT I NEED
+================================================================================
+
+For each observation, I need:
+
+1. Timestamp (UT): When the observation was made
+   Format: YYYY-MM-DD HH:MM:SS
+   Example: 2025-12-20 01:21:40
+
+2. Observatory: MPC code for the observatory
+   Examples: G96, 703, 568, etc.
+
+3. Observed RA: Right Ascension
+   Format: HH MM SS.SSS
+   Example: 11 05 53.640
+
+4. Observed Dec: Declination
+   Format: ±DD MM SS.SS
+   Example: +05 24 55.44
+
+================================================================================
+NEXT STEPS
+================================================================================
+
+Once you provide the observations (via any of the options above), the script
+will:
+
+1. Query JPL Horizons for Solution 44 predictions at each timestamp
+2. Calculate residuals (O-C) for each observation
+3. Generate an HTML table showing:
+   - Observed vs Calculated positions
+   - Residuals in arcseconds
+   - 3-sigma uncertainties
+   - Color-coded significance (good/marginal/failed predictions)
+
+================================================================================
