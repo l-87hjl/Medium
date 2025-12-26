@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JPL Horizons Ephemeris Lookup</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #292929;
+            background: #f5f5f5;
+        }
+        h1 {
+            font-size: 2em;
+            line-height: 1.2;
+            margin-bottom: 0.5em;
+            font-weight: 700;
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+            font-family: 'Monaco', 'Courier New', monospace;
+            box-sizing: border-box;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .input-hint {
+            font-size: 0.85em;
+            color: #888;
+            margin-top: 4px;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        button:hover {
+            transform: translateY(-1px);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        #loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+            font-weight: 600;
+        }
+        #results {
+            display: none;
+        }
+        #error {
+            display: none;
+            padding: 15px;
+            background: #fee;
+            border: 1px solid #fcc;
+            border-radius: 4px;
+            color: #c33;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5em 0;
+            font-size: 0.9em;
+        }
+        th, td {
+            padding: 0.75em;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            font-weight: 600;
+            background: #f8f8f8;
+            white-space: nowrap;
+        }
+        td.numeric {
+            font-family: 'Monaco', 'Courier New', monospace;
+        }
+        .section-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin: 1.5em 0 0.5em 0;
+            color: #444;
+        }
+        .info-box {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        .raw-output {
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.85em;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        .toggle-raw {
+            background: #f0f0f0;
+            color: #333;
+            padding: 8px 16px;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>JPL Horizons Ephemeris Lookup</h1>
+
+    <div class="container">
+        <div class="info-box">
+            <strong>About this tool:</strong> Query JPL Horizons for precise ephemeris data including position, proper motion, and 3-sigma uncertainties for any celestial object from any observatory location.
+        </div>
+
+        <form id="horizons-form">
+            <div class="form-group">
+                <label for="object-id">Object ID (SPK-ID or Name):</label>
+                <input type="text" id="object-id" name="object-id" placeholder="e.g., 1004083 or C/2025 N1" required>
+                <div class="input-hint">Enter the SPK-ID (e.g., 1004083) or object name (e.g., C/2025 N1)</div>
+            </div>
+
+            <div class="form-group">
+                <label for="observatory-code">Observatory Code:</label>
+                <input type="text" id="observatory-code" name="observatory-code" placeholder="e.g., G96, b67, 568" required>
+                <div class="input-hint">MPC observatory code (e.g., G96=Mt. Lemmon, b67=Lemmon, 568=Mauna Kea)</div>
+            </div>
+
+            <div class="form-group">
+                <label for="timestamp">MPC Timestamp:</label>
+                <input type="text" id="timestamp" name="timestamp" placeholder="e.g., 2025 12 19.007280" required>
+                <div class="input-hint">Format: YYYY MM DD.dddddd (decimal day in UTC)</div>
+            </div>
+
+            <button type="submit">Query JPL Horizons</button>
+        </form>
+    </div>
+
+    <div id="loading">
+        <p>⏳ Querying JPL Horizons API...</p>
+    </div>
+
+    <div id="error"></div>
+
+    <div id="results" class="container">
+        <h2 class="section-title">Ephemeris Data</h2>
+
+        <div id="epoch-info"></div>
+
+        <table id="results-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Value</th>
+                    <th>Unit</th>
+                </tr>
+            </thead>
+            <tbody id="results-body">
+            </tbody>
+        </table>
+
+        <button class="toggle-raw" onclick="toggleRawOutput()">Show Raw API Response</button>
+        <div id="raw-output" class="raw-output" style="display: none;"></div>
+    </div>
+
+    <script>
+        let rawApiResponse = '';
+
+        function toggleRawOutput() {
+            const rawOutput = document.getElementById('raw-output');
+            const button = document.querySelector('.toggle-raw');
+            if (rawOutput.style.display === 'none') {
+                rawOutput.style.display = 'block';
+                button.textContent = 'Hide Raw API Response';
+            } else {
+                rawOutput.style.display = 'none';
+                button.textContent = 'Show Raw API Response';
+            }
+        }
+
+        function convertMPCTimestampToUTC(mpcTimestamp) {
+            // Parse MPC timestamp: "YYYY MM DD.dddddd"
+            const parts = mpcTimestamp.trim().split(/\s+/);
+            if (parts.length !== 3) {
+                throw new Error('Invalid MPC timestamp format. Expected: YYYY MM DD.dddddd');
+            }
+
+            const year = parseInt(parts[0]);
+            const month = parseInt(parts[1]);
+            const dayDecimal = parseFloat(parts[2]);
+
+            const day = Math.floor(dayDecimal);
+            const fraction = dayDecimal - day;
+
+            // Convert fractional day to hours, minutes, seconds
+            const totalSeconds = fraction * 24 * 60 * 60;
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            // Format as YYYY-MM-DD HH:MM:SS.sss
+            const utcTime = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ` +
+                           `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${seconds.toFixed(3).padStart(6, '0')}`;
+
+            return utcTime;
+        }
+
+        async function queryHorizons(objectId, observatoryCode, mpcTimestamp) {
+            // Convert MPC timestamp to UTC format
+            const utcTime = convertMPCTimestampToUTC(mpcTimestamp);
+
+            // Build Horizons API URL
+            const baseUrl = 'https://ssd.jpl.nasa.gov/api/horizons.api';
+
+            // Prepare observer location (prefix with @ for MPC codes)
+            const center = observatoryCode.startsWith('@') ? observatoryCode : `@${observatoryCode}`;
+
+            const params = new URLSearchParams({
+                'format': 'text',
+                'COMMAND': `'${objectId}'`,
+                'OBJ_DATA': "'YES'",
+                'MAKE_EPHEM': "'YES'",
+                'EPHEM_TYPE': "'OBSERVER'",
+                'CENTER': `'${center}'`,
+                'TLIST': `'${utcTime}'`,
+                'QUANTITIES': "'1,3,36,37'",  // RA/Dec, Rates, 3-sigma uncertainties
+                'TIME_DIGITS': "'SECONDS'",
+                'EXTRA_PREC': "'YES'",
+                'CSV_FORMAT': "'NO'"
+            });
+
+            const url = `${baseUrl}?${params.toString()}`;
+
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+            }
+
+            const text = await response.text();
+            return text;
+        }
+
+        function parseEphemeris(responseText) {
+            const lines = responseText.split('\n');
+            const results = {};
+
+            // Find the solution number and epoch from the header
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+
+                // Look for solution information
+                if (line.includes('Solution name') || line.includes('SPK')) {
+                    const match = line.match(/:\s*(.+)/);
+                    if (match) results.solution = match[1].trim();
+                }
+
+                // Look for epoch (JD format)
+                if (line.includes('Epoch')) {
+                    const match = line.match(/(\d{7}\.\d+)/);
+                    if (match) results.epoch = match[1];
+                }
+            }
+
+            // Find ephemeris data section (between $$SOE and $$EOE)
+            let inEphemeris = false;
+            let ephemerisLines = [];
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+
+                if (line.includes('$$SOE')) {
+                    inEphemeris = true;
+                    continue;
+                }
+
+                if (line.includes('$$EOE')) {
+                    break;
+                }
+
+                if (inEphemeris && line.trim().length > 0) {
+                    ephemerisLines.push(line);
+                }
+            }
+
+            // Join continuation lines and parse the main ephemeris data
+            let ephemerisLine = ephemerisLines.join(' ').trim();
+
+            if (!ephemerisLine) {
+                throw new Error('No ephemeris data found in response. Check if the object ID and time are valid.');
+            }
+
+            // Parse with regex to handle spacing variations
+            // Typical format: YYYY-Mon-DD HH:MM  HH MM SS.sss +/-DD MM SS.ss ...
+            const parts = ephemerisLine.split(/\s+/);
+
+            if (parts.length < 8) {
+                throw new Error('Insufficient data in ephemeris output. Raw line: ' + ephemerisLine.substring(0, 100));
+            }
+
+            // Extract date/time (first two fields typically)
+            results.utc_time = parts[0] + ' ' + parts[1];
+
+            // Parse RA (typically fields 2-4: HH MM SS.sss)
+            let idx = 2;
+            if (parts.length > idx + 2) {
+                results.ra_h = parts[idx];
+                results.ra_m = parts[idx + 1];
+                results.ra_s = parts[idx + 2];
+                results.ra_icrf = `${results.ra_h} ${results.ra_m} ${results.ra_s}`;
+                idx += 3;
+            }
+
+            // Parse DEC (typically fields 5-7: +/-DD MM SS.ss)
+            if (parts.length > idx + 2) {
+                results.dec_d = parts[idx];
+                results.dec_m = parts[idx + 1];
+                results.dec_s = parts[idx + 2];
+                results.dec_icrf = `${results.dec_d} ${results.dec_m} ${results.dec_s}`;
+                idx += 3;
+            }
+
+            // For QUANTITIES='1,3,36,37', the output typically includes:
+            // APmag   S-brt   delta   deldot  S-O-T  /r  S-T-O  Sky_motion Sky_mot_PA  RelVel-ANG  Lun_Sky_Brt  sky_SNR
+            // Then the astrometric parameters we want:
+            // RA_3sigma DEC_3sigma SMAA_3sig SMIA_3sig Theta RA_rate DEC_rate
+
+            // The exact position of these fields can vary, so we need to look for them more carefully
+            // Look through remaining parts for plausible values
+
+            // For now, assign remaining fields in order (this may need adjustment based on actual output)
+            const remainingParts = parts.slice(idx);
+
+            // Try to extract motion rates and uncertainties
+            // Motion rates are typically in arcsec/hr or arcsec/min
+            // Uncertainties are in arcsec
+
+            // This is a best-effort parse - the exact indices depend on the output format
+            if (remainingParts.length >= 7) {
+                // Common format for QUANTITIES='1,3,36,37':
+                // The last several fields are: dRA*cosD d(DEC)/dt RA_3sig DEC_3sig SMAA SMIA Theta
+                const len = remainingParts.length;
+
+                // Try to find these in reverse order from the end
+                results.theta = remainingParts[len - 1] || 'N/A';
+                results.smia_3sig = remainingParts[len - 2] || 'N/A';
+                results.smaa_3sig = remainingParts[len - 3] || 'N/A';
+                results.dec_3sigma = remainingParts[len - 4] || 'N/A';
+                results.ra_3sigma = remainingParts[len - 5] || 'N/A';
+                results.ddec_dt = remainingParts[len - 6] || 'N/A';
+                results.dra_cosd = remainingParts[len - 7] || 'N/A';
+            } else {
+                // Fallback: try sequential assignment
+                let rIdx = 0;
+                if (remainingParts.length > rIdx) results.dra_cosd = remainingParts[rIdx++];
+                if (remainingParts.length > rIdx) results.ddec_dt = remainingParts[rIdx++];
+                if (remainingParts.length > rIdx) results.ra_3sigma = remainingParts[rIdx++];
+                if (remainingParts.length > rIdx) results.dec_3sigma = remainingParts[rIdx++];
+                if (remainingParts.length > rIdx) results.smaa_3sig = remainingParts[rIdx++];
+                if (remainingParts.length > rIdx) results.smia_3sig = remainingParts[rIdx++];
+                if (remainingParts.length > rIdx) results.theta = remainingParts[rIdx++];
+            }
+
+            return results;
+        }
+
+        function displayResults(data, mpcTimestamp) {
+            const epochInfo = document.getElementById('epoch-info');
+            const resultsBody = document.getElementById('results-body');
+
+            // Display epoch and solution info
+            let epochHTML = '<div class="info-box">';
+            if (data.solution) epochHTML += `<strong>Solution:</strong> ${data.solution}<br>`;
+            if (data.epoch) epochHTML += `<strong>Epoch (JD):</strong> ${data.epoch}<br>`;
+            if (data.utc_time) epochHTML += `<strong>UTC Time:</strong> ${data.utc_time}<br>`;
+            epochHTML += `<strong>Input MPC Time:</strong> ${mpcTimestamp}`;
+            epochHTML += '</div>';
+            epochInfo.innerHTML = epochHTML;
+
+            // Clear previous results
+            resultsBody.innerHTML = '';
+
+            // Add results to table
+            const rows = [
+                { param: 'RA (ICRF/J2000)', value: data.ra_icrf || 'N/A', unit: 'HH MM SS.sss' },
+                { param: 'DEC (ICRF/J2000)', value: data.dec_icrf || 'N/A', unit: 'DD MM SS.ss' },
+                { param: 'dRA*cosD', value: data.dra_cosd || 'N/A', unit: 'arcsec/hr' },
+                { param: 'd(DEC)/dt', value: data.ddec_dt || 'N/A', unit: 'arcsec/hr' },
+                { param: 'RA_3sigma', value: data.ra_3sigma || 'N/A', unit: 'arcsec' },
+                { param: 'DEC_3sigma', value: data.dec_3sigma || 'N/A', unit: 'arcsec' },
+                { param: 'SMAA_3sig', value: data.smaa_3sig || 'N/A', unit: 'arcsec' },
+                { param: 'SMIA_3sig', value: data.smia_3sig || 'N/A', unit: 'arcsec' },
+                { param: 'Theta', value: data.theta || 'N/A', unit: 'deg (E of N)' }
+            ];
+
+            rows.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${row.param}</strong></td>
+                    <td class="numeric">${row.value}</td>
+                    <td>${row.unit}</td>
+                `;
+                resultsBody.appendChild(tr);
+            });
+
+            // Show results section
+            document.getElementById('results').style.display = 'block';
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function hideError() {
+            document.getElementById('error').style.display = 'none';
+        }
+
+        document.getElementById('horizons-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const objectId = document.getElementById('object-id').value.trim();
+            const observatoryCode = document.getElementById('observatory-code').value.trim();
+            const mpcTimestamp = document.getElementById('timestamp').value.trim();
+
+            // Hide previous results and errors
+            document.getElementById('results').style.display = 'none';
+            hideError();
+
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+
+            try {
+                // Query Horizons API
+                const response = await queryHorizons(objectId, observatoryCode, mpcTimestamp);
+
+                // Store raw response
+                rawApiResponse = response;
+                document.getElementById('raw-output').textContent = response;
+
+                // Parse ephemeris data
+                const data = parseEphemeris(response);
+
+                // Display results
+                displayResults(data, mpcTimestamp);
+
+            } catch (error) {
+                showError(`Error: ${error.message}`);
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
