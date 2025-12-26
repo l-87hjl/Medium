@@ -155,6 +155,8 @@
     <div class="container">
         <div class="info-box">
             <strong>About this tool:</strong> Query JPL Horizons for precise ephemeris data including position, proper motion, and 3-sigma uncertainties for any celestial object from any observatory location.
+            <br><br>
+            <strong>Note:</strong> This page uses a CORS proxy (corsproxy.io) to access the JPL Horizons API. If you experience issues, consider using the Python script alternative (<code>jpl_horizons_server.py</code>) for local queries.
         </div>
 
         <form id="horizons-form">
@@ -273,15 +275,28 @@
                 'CSV_FORMAT': "'NO'"
             });
 
-            const url = `${baseUrl}?${params.toString()}`;
+            const horizonsUrl = `${baseUrl}?${params.toString()}`;
 
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+            // Use CORS proxy to avoid CORS restrictions
+            // CORS Anywhere is a popular proxy, but you can also use allorigins.win or your own proxy
+            const corsProxy = 'https://corsproxy.io/?';
+            const url = corsProxy + encodeURIComponent(horizonsUrl);
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+                }
+
+                const text = await response.text();
+                return text;
+            } catch (error) {
+                // If CORS proxy fails, provide helpful error message
+                if (error.message.includes('Failed to fetch') || error.message.includes('CORS')) {
+                    throw new Error(`CORS Error: Unable to reach JPL Horizons API. Try the Python script alternative or use a local CORS proxy. Details: ${error.message}`);
+                }
+                throw error;
             }
-
-            const text = await response.text();
-            return text;
         }
 
         function parseEphemeris(responseText) {
