@@ -1,0 +1,16 @@
+JPL Horizons Query URL (Fixed)
+================================
+
+Query for: 1004083, G96, 2025 12 19.007280
+Converted UTC: 2025-12-19 00:10:28.992
+
+CORRECTED URL (properly encoded):
+https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND=1004083&OBJ_DATA=YES&MAKE_EPHEM=YES&EPHEM_TYPE=OBSERVER&CENTER=@G96&TLIST=2025-12-19%2000:10:28.992&QUANTITIES=1,3,36,37&TIME_DIGITS=SECONDS&EXTRA_PREC=YES&CSV_FORMAT=NO
+
+Key changes:
+1. Removed single quotes around all parameter values (JPL doesn't need them in URLs)
+2. URL-encoded the space in timestamp as %20
+3. COMMAND value doesn't need quotes
+4. QUANTITIES values don't need quotes
+
+You can copy this URL and paste it directly into your browser!
