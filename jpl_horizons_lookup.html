@@ -261,16 +261,16 @@
 
             const params = new URLSearchParams({
                 'format': 'text',
-                'COMMAND': `'${objectId}'`,
-                'OBJ_DATA': "'YES'",
-                'MAKE_EPHEM': "'YES'",
-                'EPHEM_TYPE': "'OBSERVER'",
-                'CENTER': `'${center}'`,
-                'TLIST': `'${utcTime}'`,
-                'QUANTITIES': "'1,3,36,37'",  // RA/Dec, Rates, 3-sigma uncertainties
-                'TIME_DIGITS': "'SECONDS'",
-                'EXTRA_PREC': "'YES'",
-                'CSV_FORMAT': "'NO'"
+                'COMMAND': objectId,
+                'OBJ_DATA': 'YES',
+                'MAKE_EPHEM': 'YES',
+                'EPHEM_TYPE': 'OBSERVER',
+                'CENTER': center,
+                'TLIST': utcTime,
+                'QUANTITIES': '1,3,36,37',  // RA/Dec, Rates, 3-sigma uncertainties
+                'TIME_DIGITS': 'SECONDS',
+                'EXTRA_PREC': 'YES',
+                'CSV_FORMAT': 'NO'
             });
 
             const url = `${baseUrl}?${params.toString()}`;
