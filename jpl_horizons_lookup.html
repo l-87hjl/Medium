@@ -269,12 +269,12 @@
                 'EPHEM_TYPE': 'OBSERVER',
                 'CENTER': center,
                 'TLIST': utcTime,
-                'QUANTITIES': '1,3,9,20,23,24',  // 1=RA&DEC, 3=rates, 9=visual mag, 20=obs sub-long&lat, 23=sky motion, 24=sky motion PA
+                'QUANTITIES': '1',  // 1=RA&DEC (astrometric J2000)
                 'TIME_DIGITS': 'SECONDS',
                 'ANG_FORMAT': 'HMS',
                 'EXTRA_PREC': 'YES',
-                'CSV_FORMAT': 'NO',
-                'CAL_FORMAT': 'BOTH'
+                'REF_SYSTEM': 'ICRF',
+                'CSV_FORMAT': 'NO'
             });
 
             const horizonsUrl = `${baseUrl}?${params.toString()}`;
