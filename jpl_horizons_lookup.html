@@ -224,7 +224,7 @@
             }
         }
 
-        function convertMPCTimestampToUTC(mpcTimestamp) {
+        function convertMPCTimestampToJD(mpcTimestamp) {
             // Parse MPC timestamp: "YYYY MM DD.dddddd"
             const parts = mpcTimestamp.trim().split(/\s+/);
             if (parts.length !== 3) {
@@ -235,25 +235,27 @@
             const month = parseInt(parts[1]);
             const dayDecimal = parseFloat(parts[2]);
 
+            // Convert to Julian Date
+            // Algorithm from Astronomical Algorithms by Jean Meeus
+            const a = Math.floor((14 - month) / 12);
+            const y = year + 4800 - a;
+            const m = month + 12 * a - 3;
+
+            const jdn = Math.floor(dayDecimal) + Math.floor((153 * m + 2) / 5) +
+                        365 * y + Math.floor(y / 4) - Math.floor(y / 100) +
+                        Math.floor(y / 400) - 32045;
+
+            // Add fractional day
             const day = Math.floor(dayDecimal);
             const fraction = dayDecimal - day;
+            const jd = jdn + fraction - 0.5;
 
-            // Convert fractional day to hours, minutes, seconds
-            const totalSeconds = fraction * 24 * 60 * 60;
-            const hours = Math.floor(totalSeconds / 3600);
-            const minutes = Math.floor((totalSeconds % 3600) / 60);
-            const seconds = totalSeconds % 60;
-
-            // Format as YYYY-MM-DD HH:MM:SS.sss
-            const utcTime = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ` +
-                           `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${seconds.toFixed(3).padStart(6, '0')}`;
-
-            return utcTime;
+            return jd.toFixed(6);
         }
 
         async function queryHorizons(objectId, observatoryCode, mpcTimestamp) {
-            // Convert MPC timestamp to UTC format
-            const utcTime = convertMPCTimestampToUTC(mpcTimestamp);
+            // Convert MPC timestamp to Julian Date
+            const jd = convertMPCTimestampToJD(mpcTimestamp);
 
             // Build Horizons API URL
             const baseUrl = 'https://ssd.jpl.nasa.gov/api/horizons.api';
@@ -268,13 +270,13 @@
                 'MAKE_EPHEM': 'YES',
                 'EPHEM_TYPE': 'OBSERVER',
                 'CENTER': center,
-                'TLIST': utcTime,
+                'TLIST': jd,
                 'QUANTITIES': '1',  // 1=RA&DEC (astrometric J2000)
-                'TIME_DIGITS': 'SECONDS',
                 'ANG_FORMAT': 'HMS',
                 'EXTRA_PREC': 'YES',
                 'REF_SYSTEM': 'ICRF',
-                'CSV_FORMAT': 'NO'
+                'CSV_FORMAT': 'NO',
+                'CAL_FORMAT': 'CAL'
             });
 
             const horizonsUrl = `${baseUrl}?${params.toString()}`;
