@@ -253,9 +253,36 @@
             return jd.toFixed(6);
         }
 
+        function convertMPCTimestampToUTC(mpcTimestamp) {
+            // Parse MPC timestamp: "YYYY MM DD.dddddd"
+            const parts = mpcTimestamp.trim().split(/\s+/);
+            if (parts.length !== 3) {
+                throw new Error('Invalid MPC timestamp format. Expected: YYYY MM DD.dddddd');
+            }
+
+            const year = parseInt(parts[0]);
+            const month = parseInt(parts[1]);
+            const dayDecimal = parseFloat(parts[2]);
+
+            const day = Math.floor(dayDecimal);
+            const fraction = dayDecimal - day;
+
+            // Convert fractional day to hours, minutes, seconds
+            const totalSeconds = fraction * 24 * 60 * 60;
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            // Format as YYYY-MM-DD HH:MM:SS
+            const utcTime = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ` +
+                           `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(Math.floor(seconds)).padStart(2, '0')}`;
+
+            return utcTime;
+        }
+
         async function queryHorizons(objectId, observatoryCode, mpcTimestamp) {
-            // Convert MPC timestamp to Julian Date
-            const jd = convertMPCTimestampToJD(mpcTimestamp);
+            // Convert MPC timestamp to UTC calendar format
+            const utcTime = convertMPCTimestampToUTC(mpcTimestamp);
 
             // Build Horizons API URL
             const baseUrl = 'https://ssd.jpl.nasa.gov/api/horizons.api';
@@ -263,42 +290,33 @@
             // Prepare observer location (prefix with @ for MPC codes)
             const center = observatoryCode.startsWith('@') ? observatoryCode : `@${observatoryCode}`;
 
-            // Format COMMAND parameter correctly
-            // For SPK-IDs outside the standard ranges, use DES= format
+            // Format COMMAND parameter - use DES= for SPK-IDs outside standard ranges
             let command = objectId;
             const numericId = parseInt(objectId);
             if (!isNaN(numericId)) {
-                // It's a numeric ID - add semicolon and potentially DES= wrapper
                 if (numericId > 875150 && numericId < 50000001) {
-                    // Outside standard asteroid range, use DES= format
                     command = `DES=${numericId};`;
                 } else if (numericId >= 90004938) {
-                    // Beyond comet range, use DES= format
                     command = `DES=${numericId};`;
                 } else {
-                    // Within standard range, just add semicolon
                     command = `${numericId};`;
                 }
             } else if (!objectId.includes(';')) {
-                // Named object without semicolon, add it
                 command = `${objectId};`;
             }
 
-            // Build URL manually to avoid double-encoding issues with CORS proxy
+            // Build URL - ALL values must be wrapped in single quotes per JPL API requirements
             const params = [
                 `format=text`,
-                `COMMAND=${encodeURIComponent(command)}`,
-                `OBJ_DATA=YES`,
-                `MAKE_EPHEM=YES`,
-                `EPHEM_TYPE=OBSERVER`,
-                `CENTER=${encodeURIComponent(center)}`,
-                `TLIST=${jd}`,
-                `QUANTITIES=1`,
-                `ANG_FORMAT=HMS`,
-                `EXTRA_PREC=YES`,
-                `REF_SYSTEM=ICRF`,
-                `CSV_FORMAT=NO`,
-                `CAL_FORMAT=CAL`
+                `COMMAND=${encodeURIComponent("'" + command + "'")}`,
+                `MAKE_EPHEM=${encodeURIComponent("'YES'")}`,
+                `EPHEM_TYPE=${encodeURIComponent("'OBSERVER'")}`,
+                `CENTER=${encodeURIComponent("'" + center + "'")}`,
+                `TLIST=${encodeURIComponent("'" + utcTime + "'")}`,
+                `QUANTITIES=${encodeURIComponent("'1,3,36,37'")}`,
+                `EXTRA_PREC=${encodeURIComponent("'YES'")}`,
+                `TIME_DIGITS=${encodeURIComponent("'SECONDS'")}`,
+                `CSV_FORMAT=${encodeURIComponent("'NO'")}`
             ];
 
             const horizonsUrl = `${baseUrl}?${params.join('&')}`;
