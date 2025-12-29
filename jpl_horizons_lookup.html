@@ -287,9 +287,8 @@
             // Build Horizons API URL
             const baseUrl = 'https://ssd.jpl.nasa.gov/api/horizons.api';
 
-            // Prepare observer location - trim whitespace and format properly
-            const cleanCode = observatoryCode.trim();
-            const center = cleanCode.startsWith('@') ? cleanCode : `@${cleanCode}`;
+            // Prepare observer location - trim whitespace
+            const center = observatoryCode.trim();
 
             // Format COMMAND parameter - use DES= for SPK-IDs outside standard ranges
             let command = objectId.trim();
