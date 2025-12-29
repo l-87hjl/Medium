@@ -263,9 +263,30 @@
             // Prepare observer location (prefix with @ for MPC codes)
             const center = observatoryCode.startsWith('@') ? observatoryCode : `@${observatoryCode}`;
 
+            // Format COMMAND parameter correctly
+            // For SPK-IDs outside the standard ranges, use DES= format
+            let command = objectId;
+            const numericId = parseInt(objectId);
+            if (!isNaN(numericId)) {
+                // It's a numeric ID - add semicolon and potentially DES= wrapper
+                if (numericId > 875150 && numericId < 50000001) {
+                    // Outside standard asteroid range, use DES= format
+                    command = `DES=${numericId};`;
+                } else if (numericId >= 90004938) {
+                    // Beyond comet range, use DES= format
+                    command = `DES=${numericId};`;
+                } else {
+                    // Within standard range, just add semicolon
+                    command = `${numericId};`;
+                }
+            } else if (!objectId.includes(';')) {
+                // Named object without semicolon, add it
+                command = `${objectId};`;
+            }
+
             const params = new URLSearchParams({
                 'format': 'text',
-                'COMMAND': objectId,
+                'COMMAND': command,
                 'OBJ_DATA': 'YES',
                 'MAKE_EPHEM': 'YES',
                 'EPHEM_TYPE': 'OBSERVER',
