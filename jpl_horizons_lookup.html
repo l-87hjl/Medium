@@ -287,11 +287,12 @@
             // Build Horizons API URL
             const baseUrl = 'https://ssd.jpl.nasa.gov/api/horizons.api';
 
-            // Prepare observer location (prefix with @ for MPC codes)
-            const center = observatoryCode.startsWith('@') ? observatoryCode : `@${observatoryCode}`;
+            // Prepare observer location - trim whitespace and format properly
+            const cleanCode = observatoryCode.trim();
+            const center = cleanCode.startsWith('@') ? cleanCode : `@${cleanCode}`;
 
             // Format COMMAND parameter - use DES= for SPK-IDs outside standard ranges
-            let command = objectId;
+            let command = objectId.trim();
             const numericId = parseInt(objectId);
             if (!isNaN(numericId)) {
                 if (numericId > 875150 && numericId < 50000001) {
@@ -420,6 +421,9 @@
                 results.dec_icrf = `${results.dec_d} ${results.dec_m} ${results.dec_s}`;
                 idx += 3;
             }
+
+            // Get remaining parts after RA and DEC
+            const remainingParts = parts.slice(idx);
 
             // Parse output format for QUANTITIES='1,3,36,37':
             // Date Time RA(3) DEC(3) dRA*cosD d(DEC)/dt RA_3sig DEC_3sig SMAA SMIA Theta Area
