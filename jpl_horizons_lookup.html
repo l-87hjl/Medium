@@ -284,26 +284,26 @@
                 command = `${objectId};`;
             }
 
-            const params = new URLSearchParams({
-                'format': 'text',
-                'COMMAND': command,
-                'OBJ_DATA': 'YES',
-                'MAKE_EPHEM': 'YES',
-                'EPHEM_TYPE': 'OBSERVER',
-                'CENTER': center,
-                'TLIST': jd,
-                'QUANTITIES': '1',  // 1=RA&DEC (astrometric J2000)
-                'ANG_FORMAT': 'HMS',
-                'EXTRA_PREC': 'YES',
-                'REF_SYSTEM': 'ICRF',
-                'CSV_FORMAT': 'NO',
-                'CAL_FORMAT': 'CAL'
-            });
+            // Build URL manually to avoid double-encoding issues with CORS proxy
+            const params = [
+                `format=text`,
+                `COMMAND=${encodeURIComponent(command)}`,
+                `OBJ_DATA=YES`,
+                `MAKE_EPHEM=YES`,
+                `EPHEM_TYPE=OBSERVER`,
+                `CENTER=${encodeURIComponent(center)}`,
+                `TLIST=${jd}`,
+                `QUANTITIES=1`,
+                `ANG_FORMAT=HMS`,
+                `EXTRA_PREC=YES`,
+                `REF_SYSTEM=ICRF`,
+                `CSV_FORMAT=NO`,
+                `CAL_FORMAT=CAL`
+            ];
 
-            const horizonsUrl = `${baseUrl}?${params.toString()}`;
+            const horizonsUrl = `${baseUrl}?${params.join('&')}`;
 
             // Use CORS proxy to avoid CORS restrictions
-            // CORS Anywhere is a popular proxy, but you can also use allorigins.win or your own proxy
             const corsProxy = 'https://corsproxy.io/?';
             const url = corsProxy + encodeURIComponent(horizonsUrl);
 
