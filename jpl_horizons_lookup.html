@@ -421,37 +421,24 @@
                 idx += 3;
             }
 
-            // For QUANTITIES='1,3,36,37', the output typically includes:
-            // APmag   S-brt   delta   deldot  S-O-T  /r  S-T-O  Sky_motion Sky_mot_PA  RelVel-ANG  Lun_Sky_Brt  sky_SNR
-            // Then the astrometric parameters we want:
-            // RA_3sigma DEC_3sigma SMAA_3sig SMIA_3sig Theta RA_rate DEC_rate
+            // Parse output format for QUANTITIES='1,3,36,37':
+            // Date Time RA(3) DEC(3) dRA*cosD d(DEC)/dt RA_3sig DEC_3sig SMAA SMIA Theta Area
+            // Example: 2025-Dec-20 02:00:31.000  10 42 10.952911 +07 25 40.06347  -175.175  59.35761  0.329  0.179  0.344  0.148  -18.718 0.1600720
 
-            // The exact position of these fields can vary, so we need to look for them more carefully
-            // Look through remaining parts for plausible values
-
-            // For now, assign remaining fields in order (this may need adjustment based on actual output)
-            const remainingParts = parts.slice(idx);
-
-            // Try to extract motion rates and uncertainties
-            // Motion rates are typically in arcsec/hr or arcsec/min
-            // Uncertainties are in arcsec
-
-            // This is a best-effort parse - the exact indices depend on the output format
+            // The fields after RA and DEC are in fixed order:
             if (remainingParts.length >= 7) {
-                // Common format for QUANTITIES='1,3,36,37':
-                // The last several fields are: dRA*cosD d(DEC)/dt RA_3sig DEC_3sig SMAA SMIA Theta
-                const len = remainingParts.length;
-
-                // Try to find these in reverse order from the end
-                results.theta = remainingParts[len - 1] || 'N/A';
-                results.smia_3sig = remainingParts[len - 2] || 'N/A';
-                results.smaa_3sig = remainingParts[len - 3] || 'N/A';
-                results.dec_3sigma = remainingParts[len - 4] || 'N/A';
-                results.ra_3sigma = remainingParts[len - 5] || 'N/A';
-                results.ddec_dt = remainingParts[len - 6] || 'N/A';
-                results.dra_cosd = remainingParts[len - 7] || 'N/A';
+                results.dra_cosd = remainingParts[0];      // dRA*cosD (arcsec/hr)
+                results.ddec_dt = remainingParts[1];       // d(DEC)/dt (arcsec/hr)
+                results.ra_3sigma = remainingParts[2];     // RA_3sigma (arcsec)
+                results.dec_3sigma = remainingParts[3];    // DEC_3sigma (arcsec)
+                results.smaa_3sig = remainingParts[4];     // SMAA_3sig (arcsec)
+                results.smia_3sig = remainingParts[5];     // SMIA_3sig (arcsec)
+                results.theta = remainingParts[6];         // Theta (deg)
+                if (remainingParts.length > 7) {
+                    results.area_3sig = remainingParts[7]; // Area_3sig (arcsec^2)
+                }
             } else {
-                // Fallback: try sequential assignment
+                // Fallback if fewer fields
                 let rIdx = 0;
                 if (remainingParts.length > rIdx) results.dra_cosd = remainingParts[rIdx++];
                 if (remainingParts.length > rIdx) results.ddec_dt = remainingParts[rIdx++];
